@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "716877088995",
+    "project_id": "todo-c7-friday",
+    "storage_bucket": "todo-c7-friday.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716877088995:android:dd1f5ad02ed44297471dd6",
+        "android_client_info": {
+          "package_name": "com.example.todo_c7_fri"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716877088995-n5idtqlse8u5k9vb47e3bjn1eafdg6lr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-FzuV4pxkE4w7w_RD1daaZ9X-CtaL33I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716877088995-n5idtqlse8u5k9vb47e3bjn1eafdg6lr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
