@@ -1,22 +1,35 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_c7_fri/models/task.dart';
 import 'package:todo_c7_fri/modules/tasks_list/task_item.dart';
+import 'package:todo_c7_fri/shared/network/local/firebase_utils.dart';
 import 'package:todo_c7_fri/shared/styles/colors.dart';
 
-class TaskListTab extends StatelessWidget {
-  const TaskListTab({Key? key}) : super(key: key);
+class TaskListTab extends StatefulWidget {
+  @override
+  State<TaskListTab> createState() => _TaskListTabState();
+}
+
+class _TaskListTabState extends State<TaskListTab> {
+  DateTime date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    print(date);
     return Container(
       child: Column(
         children: [
           CalendarTimeline(
-            initialDate: DateTime.now(),
+            initialDate: date,
             firstDate: DateTime.now().subtract(Duration(days: 365)),
             lastDate: DateTime.now().add(Duration(days: 365)),
-            onDateSelected: (date) {
+            onDateSelected: (dateTime) {
               print('$date');
+              date = dateTime;
+              setState(() {
+
+              });
             },
             leftMargin: 20,
             monthColor: colorBlack,
@@ -28,12 +41,24 @@ class TaskListTab extends StatelessWidget {
             locale: 'en',
           ),
           Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return TaskItem();
-              },
-              itemCount: 15,
-            ),
+            child: StreamBuilder<QuerySnapshot<Task>>(
+                stream: getTasksFromFirestore(date),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Something went wrong'));
+                  }
+                  var tasks = snapshot.data!.docs.map((e) => e.data()).toList();
+                  print('hint ${tasks.length}');
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return TaskItem(tasks[index]);
+                    },
+                    itemCount: tasks.length,
+                  );
+                }),
           ),
         ],
       ),

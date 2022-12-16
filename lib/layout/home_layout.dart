@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_c7_fri/modules/tasks_list/task_list.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo_c7_fri/providers/my_provider.dart';
 import '../modules/settings/settings.dart';
 import '../modules/tasks_list/add_task_bottom_sheet.dart';
 
@@ -16,9 +18,19 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<MyProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Route Tasks'),
+        title: Text(AppLocalizations.of(context)!.appBarTitle),
+        actions: [
+          IconButton(onPressed: () {
+            if (provider.languageCode == 'ar') {
+              provider.changeLanguage('en');
+            } else {
+              provider.changeLanguage('ar');
+            }
+          }, icon: Icon(Icons.public, color: Colors.white,))
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(

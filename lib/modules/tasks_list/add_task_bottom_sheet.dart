@@ -3,6 +3,8 @@ import 'package:todo_c7_fri/models/task.dart';
 import 'package:todo_c7_fri/shared/network/local/firebase_utils.dart';
 import 'package:todo_c7_fri/shared/styles/colors.dart';
 
+import '../../shared/components/ui_utils.dart';
+
 class AddTaskBottomSheet extends StatefulWidget {
   @override
   State<AddTaskBottomSheet> createState() => _AddTaskBottomSheetState();
@@ -131,8 +133,20 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     Task task = Task(
                         title: titleController.text,
                         description: descriptionController.text,
-                        date: selectedDate.microsecondsSinceEpoch);
-                    addTaskToFireStore(task);
+                        date: DateUtils
+                            .dateOnly(selectedDate)
+                            .microsecondsSinceEpoch);
+                    showLoding('Loading...', context);
+                    addTaskToFireStore(task).then((value) {
+                      hideLoading(context);
+                      showMessage(context, 'Task Added Successfully',
+                          'Ok', () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          });
+                    }).catchError((error) {
+                      print(error);
+                    });
                   }
                 },
                 child: Text('Add Task'))
